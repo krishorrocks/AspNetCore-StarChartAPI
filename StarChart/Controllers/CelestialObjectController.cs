@@ -92,7 +92,7 @@ namespace StarChart.Controllers
             }
         }
 
-        [HttpPatch("{id}/name")]
+        [HttpPatch("{id}/{name}")]
         public IActionResult RenameObject(int id, string name)
         {
             var findResult = GetById(id);
