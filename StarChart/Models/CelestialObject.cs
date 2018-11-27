@@ -9,18 +9,23 @@ namespace StarChart.Models
 {
     public class CelestialObject
     {
-        public int Id;
+        private int id;
+
+        private int? orbitedObjectId;
+
+        private List<CelestialObject> satellites;
+
+        private TimeSpan orbitalPeriod;
+
+        public int Id { get => id; set => id = value; }
 
         [Required]
-        public string Name;
-
-        public int? OrbitedObjectId;
+        public string Name { get; set; }
 
         [NotMapped]
-        public List<CelestialObject> Satellites;
+        public List<CelestialObject> Satellites { get => satellites; set => satellites = value; }
 
-        public TimeSpan OrbitalPeriod;
-
-
+        public TimeSpan OrbitalPeriod { get => orbitalPeriod; set => orbitalPeriod = value; }
+        public int? OrbitedObjectId { get => orbitedObjectId; set => orbitedObjectId = value; }
     }
 }
