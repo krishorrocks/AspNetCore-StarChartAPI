@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StarChart.Data;
+using StarChart.Models;
 
 namespace StarChart.Controllers
 {
@@ -35,20 +36,30 @@ namespace StarChart.Controllers
         [HttpGet("{name}")]
         public IActionResult GetByName(string name)
         {
-            var foundObject = _context.CelestialObjects.Where(c => c.Name == name).FirstOrDefault();
+            var foundObjects = _context.CelestialObjects.Where(c => c.Name == name).ToList();
 
-            if (foundObject == null)
+            if (foundObjects.Count == 0)
                 return NotFound();
             else
             {
-                foundObject.Satellites = _context.CelestialObjects.Where(c => c.OrbitedObjectId == foundObject.Id).ToList();
-                return Ok(foundObject);
+                foreach(CelestialObject c in foundObjects)
+                {
+                    c.Satellites = _context.CelestialObjects.Where(x => x.OrbitedObjectId == c.Id).ToList();
+                }
+                return Ok(foundObjects);
             }
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
+            var foundObjects = _context.CelestialObjects.ToList();
+
+            foreach (CelestialObject c in foundObjects)
+            {
+                c.Satellites = _context.CelestialObjects.Where(x => x.OrbitedObjectId == c.Id).ToList();
+            }
+
             return Ok(_context.CelestialObjects.ToList());
         }
     }
